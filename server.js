@@ -5,21 +5,16 @@ const app = express();
 app.use(bodyParser.json());
 const db_connect = require("./config/db");
 
-
-
 //! MongoDb connection
-db_connect()
-
+db_connect();
 
 //! Connection Check
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to Login Authentication app" });
+  res.json({ message: "Welcome to Task Manager app" });
 });
 //! Routes
-app.use("/api/visitors",require("./routes/api/route"))
-app.use("/api/tasks",require("./routes/api/tasks"))
-
-
+app.use("/api/visitors", require("./routes/api/route"));
+app.use("/api/tasks", require("./routes/api/tasks"));
 
 const port = process.env.PORT;
 app.listen(port, () => {
