@@ -13,7 +13,7 @@ router.post("/newTask",[authAccessToken], async (req, res) => {
       title: req.body.title,
       desc: req.body.desc ?? "",
       userId :id,
-      status: "to-do"
+      
     };
     const task = new Task(taskObject); 
     res.status(201).json(task);
