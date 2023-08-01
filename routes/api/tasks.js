@@ -27,11 +27,12 @@ router.post("/newTask",[authAccessToken], async (req, res) => {
 });
 
 
-  //! Get all visitors
-  router.get("/", async (req, res) => {
+  //! Get all tasks by visitors
+  router.get("/get",authAccessToken, async (req, res) => {
     try {
-      const visitor = await Visitors.find();
-      res.json(visitor);
+      const id = req.payload.id
+      const task = await Task.find({userId:id});
+      res.json(task);
     } catch (error) {
       console.error(error);
       res
