@@ -17,6 +17,7 @@ app.get("/", (req, res) => {
 });
 //! Routes
 app.use("/api/visitors",require("./routes/api/route"))
+app.use("/api/tasks",require("./routes/api/tasks"))
 
 
 
