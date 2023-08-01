@@ -10,10 +10,12 @@ const taskSchema = new mongoose.Schema({
       type: String,
     },
     userId: {
-      type: String,
+      type:  mongoose.Schema.Types.ObjectId,
+      ref: "User"
     },
     desc: {
         type: String,
+        
     }
   },{timestamps:true});
   
