@@ -1,7 +1,4 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
-const Visitors = require("../../models/schema");
-const jwt = require("jsonwebtoken");
 const authAccessToken = require("../../middleware/auth");
 const router = express.Router();
 const Task = require("../../models/task");
