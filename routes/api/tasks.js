@@ -43,7 +43,8 @@ router.get("/get", authAccessToken, async (req, res) => {
 router.put("/update/:id", authAccessToken, async (req, res) => {
   try {
     const id = req.params.id;
-    const task = await Task.findByIdAndUpdate(id, req.body, {
+    const userId = req.payload.id
+    const task = await Task.findByIdAndUpdate({_id:id,userId:userId}, req.body, {
       new: true,
     });
     if (!task) {
