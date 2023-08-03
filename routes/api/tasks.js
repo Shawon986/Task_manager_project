@@ -39,12 +39,30 @@ router.get("/get", authAccessToken, async (req, res) => {
   }
 });
 
+//! Update a status by visitor
+router.put("/status/:id", authAccessToken, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userId = req.payload.id;
+    const status = req.body.status;
+    const task = await Task.findOneAndUpdate({_id:id,userId:userId}, {status:status}, {
+      new: true,
+    });
+    if (!task) {
+      res.status(404).json({ message: "task not found" });
+    } else {
+      res.json(task);
+      await task.save();
+    }
+  } catch (error) {}
+});
+
 //! Update a task by visitor
 router.put("/update/:id", authAccessToken, async (req, res) => {
   try {
     const id = req.params.id;
     const userId = req.payload.id
-    const task = await Task.findByIdAndUpdate({_id:id,userId:userId}, req.body, {
+    const task = await Task.findOneAndUpdate({_id:id,userId:userId}, req.body, {
       new: true,
     });
     if (!task) {
