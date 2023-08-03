@@ -93,15 +93,16 @@ router.get("/getone/:id", authAccessToken,async (req, res) => {
   }
 });
 
-//! Delete a visitor by id
-router.delete("/:id", async (req, res) => {
+//! Delete a task by visitor
+router.delete("/delete/:id",authAccessToken, async (req, res) => {
   try {
     const id = req.params.id;
-    const visitor = await Visitors.findByIdAndDelete(id);
-    if (!visitor) {
-      res.status(404).json({ message: "Visitor not found" });
+    const userId = req.payload.id;
+    const task = await Task.findOneAndDelete({_id:id,userId:userId});
+    if (!task) {
+      res.status(404).json({ message: "task not found" });
     } else {
-      res.json(visitor);
+      res.json(task);
     }
   } catch (error) {}
 });
