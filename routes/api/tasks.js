@@ -74,15 +74,16 @@ router.put("/update/:id", authAccessToken, async (req, res) => {
   } catch (error) {}
 });
 
-//! Get a visitor by id
-router.get("/:id", async (req, res) => {
+//! Get a task by visitor
+router.get("/getone/:id", authAccessToken,async (req, res) => {
   try {
     const id = req.params.id;
-    const visitor = await Visitors.findById(id);
-    if (!visitor) {
-      res.status(404).json({ message: "Visitor not found" });
+    const userId = req.payload.id;
+    const task = await Task.findOne({_id: id, userId: userId});
+    if (!task) {
+      res.status(404).json({ message: "task not found" });
     } else {
-      res.json(visitor);
+      res.json(task);
     }
   } catch (error) {
     console.error(error);
