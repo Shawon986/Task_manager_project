@@ -106,19 +106,24 @@ router.put("/:id", async (req, res) => {
   
   //Login a visitor
 
-router.post("/login", async (req, res) => {
+router.post("/login",[
+  body("type","Type must be either Email or Refresh").isIn(["email","refresh"])
+], async (req, res) => {
     try {
+      const errors = validationResult(req)
+      let error = errors.array().map((error)=>error.msg)
+      if(!errors.isEmpty()){
+        return res.status(400).json({errors:error})
+      }  
       const { email, password, type, refreshToken } = req.body;
-      if (!type) {
-        res.status(401).json({ message: "Type is not defined" });
-      } else {
+      
         if (type == "email") {
           await emailLogin(email, res, password);
         } else {
           refreshTokenLogin(refreshToken, res, password);
         }
       }
-    } catch (error) {
+     catch (error) {
       console.error(error);
       res
         .status(400)
@@ -168,7 +173,7 @@ router.post("/login", async (req, res) => {
               if (!passvalidity) {
                 res.status(401).json({ message: "Visitor unauthorized" });
               } else {
-                getVisitorToken(visitor, res);
+                getVisitorToken(visitor, res);               
               }
             }
           }
