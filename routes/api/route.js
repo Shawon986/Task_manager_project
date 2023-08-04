@@ -4,11 +4,20 @@ const Visitors = require("../../models/schema")
 const jwt = require("jsonwebtoken");
 const authAccessToken = require("../../middleware/auth")
 const router = express.Router()
+const {body, validationResult} = require("express-validator")
 
 
 //! Create Visitor
-router.post("/", async (req, res) => {
+router.post("/",[
+  body("name","Please input the name").notEmpty()
+], async (req, res) => {
     try {
+      
+      const errors = validationResult(req)
+      let error = errors.array().map((error)=>error.msg)
+      if(!errors.isEmpty()){
+        return res.status(400).json({errors:error})
+      }
       const salt = await bcrypt.genSalt(10);
       const hashedPass = await bcrypt.hash(req.body.password, salt);
       const password = hashedPass;
