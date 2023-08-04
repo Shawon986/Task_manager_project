@@ -9,7 +9,11 @@ const {body, validationResult} = require("express-validator")
 
 //! Create Visitor
 router.post("/",[
-  body("name","Please input the name").notEmpty()
+  body("name","Please input the name").notEmpty(),
+  body("email","Please input your valid email address").isEmail(),
+  body("email","Email cannot be empty").notEmpty(),
+  body("password","password cannot be empty").notEmpty(),
+  body("password","password must be 8-14 charecter").isLength({min:8,max:14})
 ], async (req, res) => {
     try {
       
