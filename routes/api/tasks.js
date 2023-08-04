@@ -1,10 +1,19 @@
 const express = require("express");
 const authAccessToken = require("../../middleware/auth");
 const router = express.Router();
+const {body, validationResult} = require("express-validator")
+
 const Task = require("../../models/task");
 
-router.post("/newTask", [authAccessToken], async (req, res) => {
+router.post("/newTask",[
+  body("title","Please input the title").notEmpty()
+], [authAccessToken], async (req, res) => {
   try {
+    const errors = validationResult(req)
+    let error = errors.array().map((error)=>error.msg)
+    if(!errors.isEmpty()){
+      return res.status(400).json({errors:error})
+    }  
     const id = req.payload.id;
     const taskObject = {
       title: req.body.title,
